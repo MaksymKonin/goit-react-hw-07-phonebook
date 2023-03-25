@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import css from './FormCreateNewContact.module.css';
 class FormCreateNewContact extends Component {
   state = {
     name: '',
@@ -21,12 +22,15 @@ class FormCreateNewContact extends Component {
 
   render() {
     const { name, number } = this.state;
-    console.log('start render fotm');
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name
+      <form onSubmit={this.handleSubmit} className={css.form}>
+        <div>
+          <label htmlFor="name" className={css.label}>
+            Name{' '}
+          </label>
           <input
+            className={css.input}
+            id="name"
             name="name"
             type="text"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -35,10 +39,14 @@ class FormCreateNewContact extends Component {
             value={name}
             onChange={this.handleChange}
           />
-        </label>
-        <label>
-          Number
+        </div>
+        <div>
+          <label htmlFor="number" className={css.label}>
+            Number
+          </label>
           <input
+            className={css.input}
+            id="number"
             name="number"
             type="tel"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -47,8 +55,14 @@ class FormCreateNewContact extends Component {
             value={number}
             onChange={this.handleChange}
           />
-        </label>
-        <button>Add contact</button>
+        </div>
+        <button
+          type="submit"
+          className={css['btn-form']}
+          disabled={!name || !number}
+        >
+          Add contact
+        </button>
       </form>
     );
   }

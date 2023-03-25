@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
-import FormCreateNewContact from './formCreateNewContact';
-import ListContacts from './listContacts';
-import Filter from './filter';
+import FormCreateNewContact from '../formCreateNewContact';
+import ListContacts from '../listContacts';
+import Filter from '../filter';
+import css from './App.module.css';
 
 class App extends Component {
   state = {
@@ -55,10 +56,10 @@ class App extends Component {
   render() {
     const { contacts, filter } = this.state;
     return (
-      <div>
-        <h1>Phonebook</h1>
+      <div className={css.container}>
+        <h1 className={css.title}>Phonebook</h1>
         <FormCreateNewContact onSubmit={this.formSubmithandle} />
-        <h2>Contacts</h2>
+        <h2 className={css.title}>Contacts</h2>
         <Filter filter={filter} onChangeFilter={this.handleChangeFilter} />
         {filter === '' ? (
           <ListContacts
