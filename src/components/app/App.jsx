@@ -41,10 +41,12 @@ class App extends Component {
 
   filterContacts = () => {
     const { contacts, filter } = this.state;
-    return contacts.filter(contact => {
-      let normalizedName = contact.name.toUpperCase();
-      return normalizedName.includes(filter.toUpperCase());
-    });
+    if (filter)
+      return contacts.filter(contact => {
+        let normalizedName = contact.name.toUpperCase();
+        return normalizedName.includes(filter.toUpperCase());
+      });
+    return contacts;
   };
 
   deleteContact = id => {
@@ -54,24 +56,17 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { filter } = this.state;
     return (
       <div className={css.container}>
         <h1 className={css.title}>Phonebook</h1>
         <FormCreateNewContact onSubmit={this.formSubmithandle} />
         <h2 className={css.title}>Contacts</h2>
         <Filter filter={filter} onChangeFilter={this.handleChangeFilter} />
-        {filter === '' ? (
-          <ListContacts
-            contacts={contacts}
-            onDeleteContact={this.deleteContact}
-          />
-        ) : (
-          <ListContacts
-            contacts={this.filterContacts()}
-            onDeleteContact={this.deleteContact}
-          />
-        )}
+        <ListContacts
+          contacts={this.filterContacts()}
+          onDeleteContact={this.deleteContact}
+        />
       </div>
     );
   }
