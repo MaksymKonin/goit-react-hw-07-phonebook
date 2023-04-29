@@ -1,7 +1,16 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFilter } from 'redux/slice';
+
 import css from './Filter.module.css';
 
-const Filter = ({ filter, onChangeFilter }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+  const { filter } = useSelector(state => state.phoneBook);
+
+  const onChangeFilter = e => {
+    dispatch(updateFilter(e.target.value));
+  };
+
   return (
     <div>
       <label htmlFor="filter" className={css.label}>
@@ -22,8 +31,3 @@ const Filter = ({ filter, onChangeFilter }) => {
   );
 };
 export default Filter;
-
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  onChangeFilter: PropTypes.func.isRequired,
-};

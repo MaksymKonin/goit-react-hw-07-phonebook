@@ -1,22 +1,27 @@
-import PropTypes from 'prop-types';
 import ContactItem from 'components/contactItem';
 import NoContacts from 'components/noContacts';
+import { useSelector } from 'react-redux';
+
 import css from './ListContacts.module.css';
 
-const ListContacts = ({ contacts, onDeleteContact }) => {
+const ListContacts = () => {
+  const { contacts } = useSelector(state => state.phoneBook);
+  const { filter } = useSelector(state => state.phoneBook);
+
+  const filterContacts = () => {
+    return contacts.filter(contact => {
+      let normalizedName = contact.name.toUpperCase();
+      return normalizedName.includes(filter.toUpperCase());
+    });
+  };
+
+  const filteredContacts = filter === '' ? contacts : filterContacts();
+
   return (
     <ul className={css.list}>
-      {contacts.length !== 0 ? (
-        contacts.map(({ id, name, number }) => {
-          return (
-            <ContactItem
-              key={id}
-              id={id}
-              name={name}
-              number={number}
-              onDeleteContact={onDeleteContact}
-            />
-          );
+      {filteredContacts.length !== 0 ? (
+        filteredContacts.map(({ id, name, number }) => {
+          return <ContactItem key={id} id={id} name={name} number={number} />;
         })
       ) : (
         <NoContacts />
@@ -25,14 +30,3 @@ const ListContacts = ({ contacts, onDeleteContact }) => {
   );
 };
 export default ListContacts;
-
-ListContacts.propTypes = {
-  dataTransactions: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  onDeleteContact: PropTypes.func.isRequired,
-};

@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import css from './FormCreateNewContact.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
 
-export default function FormCreateNewContact({ onSubmit }) {
+import css from './FormCreateNewContact.module.css';
+import { addContact } from 'redux/slice';
+
+export default function FormCreateNewContact() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -20,12 +23,23 @@ export default function FormCreateNewContact({ onSubmit }) {
     }
   };
 
+  const dispatch = useDispatch();
+  const { contacts } = useSelector(state => state.phoneBook);
+
   const handleSubmit = e => {
-    console.log();
     e.preventDefault();
-    onSubmit({ name, number });
+    const newContact = createContact(name, number);
+    if (newContact) dispatch(addContact(newContact));
     setName('');
     setNumber('');
+  };
+
+  const createContact = (name, number) => {
+    if (contacts?.find(contact => contact.name === name)) {
+      return alert(`${name} is already in contacts`);
+    } else {
+      return { id: nanoid(), name, number };
+    }
   };
 
   return (
@@ -72,6 +86,3 @@ export default function FormCreateNewContact({ onSubmit }) {
     </form>
   );
 }
-FormCreateNewContact.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
