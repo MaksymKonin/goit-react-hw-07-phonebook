@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
+import { addContact } from 'redux/operations';
 
 import css from './FormCreateNewContact.module.css';
-import { addContact } from 'redux/slice';
+import { getContacts } from 'redux/select';
 
 export default function FormCreateNewContact() {
   const [name, setName] = useState('');
@@ -24,7 +25,7 @@ export default function FormCreateNewContact() {
   };
 
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.phoneBook);
+  const { items } = useSelector(getContacts);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -34,11 +35,11 @@ export default function FormCreateNewContact() {
     setNumber('');
   };
 
-  const createContact = (name, number) => {
-    if (contacts?.find(contact => contact.name === name)) {
+  const createContact = (name, phone) => {
+    if (items?.find(contact => contact.name === name)) {
       return alert(`${name} is already in contacts`);
     } else {
-      return { id: nanoid(), name, number };
+      return { id: nanoid(), name, phone };
     }
   };
 

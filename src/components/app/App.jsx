@@ -1,6 +1,7 @@
 import FormCreateNewContact from '../formCreateNewContact';
 import ListContacts from '../listContacts';
 import Filter from '../filter';
+
 import css from './App.module.css';
 
 export default function App() {
@@ -10,6 +11,7 @@ export default function App() {
       <FormCreateNewContact />
       <h2 className={css.title}>Contacts</h2>
       <Filter />
+
       <ListContacts />
     </div>
   );
